@@ -1,6 +1,6 @@
 <?php
 
-namespace Limenius\FilesystemRouterBundle\Routing;
+namespace Limenius\Bundle\FilesystemRouterBundle\Routing;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;

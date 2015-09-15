@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Limenius\FilesystemRouterBundle\Routing;
+namespace Limenius\Bundle\FilesystemRouterBundle\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
-use Limenius\FilesystemRouterBundle\Routing\Route;
+use Limenius\Bundle\FilesystemRouterBundle\Routing\Route;
 use Symfony\Component\Filesystem\Filesystem;
 
 class FilesystemProvider implements RouteProviderInterface

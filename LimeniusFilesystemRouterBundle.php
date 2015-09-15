@@ -1,6 +1,6 @@
 <?php
 
-namespace Limenius\FilesystemRouterBundle;
+namespace Limenius\Bundle\FilesystemRouterBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

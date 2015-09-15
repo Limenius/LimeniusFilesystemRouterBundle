@@ -1,6 +1,6 @@
 <?php
 
-namespace Limenius\FilesystemRouterBundle\DependencyInjection;
+namespace Limenius\Bundle\FilesystemRouterBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
