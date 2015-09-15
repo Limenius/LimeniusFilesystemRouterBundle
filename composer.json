@@ -1,0 +1,23 @@
+{
+    "name": "limenius/filesystem-router-bundle",
+    "description": "Symfony router for static pages",
+    "keywords": ["static", "router", "filesystem", "file", "generator", "bundle", "symfony"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nacho Martin",
+            "email": "nacho@limenius.com"
+        }
+    ],
+    "require": {
+        "symfony-cmf/routing-bundle": "^1.3",
+        "symfony/filesystem": "~2.7",
+        "symfony/framework-bundle": "~2.2"
+    },
+    "autoload": {
+        "psr-0": { "Limenius\\Bundle\\FilesystemRouterBundle": "" }
+    },
+    "target-dir": "Limenius/Bundle/FilesystemRouterBundle",
+    "minimum-stability": "dev"
+}
