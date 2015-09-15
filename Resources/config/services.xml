@@ -5,8 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="limenius.filesystem_route_provider" class="Limenius\Bundle\FilesystemRouterBundle\Routing\FilesystemProvider">
-            <argument>%kernel.root_dir%/Resources/carotene_docs/_build/html</argument>
+        <service id="limenius_filesystem_router.route_provider" class="Limenius\Bundle\FilesystemRouterBundle\Routing\FilesystemProvider">
         </service>
     </services>
 </container>

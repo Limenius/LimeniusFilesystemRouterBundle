@@ -13,11 +13,14 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class FilesystemProvider implements RouteProviderInterface
 {
-    private $basePath;
+    private $collections = [];
 
-    public function __construct($basePath)
+    public function addCollection($definition)
     {
-        $this->basePath = $basePath;
+        $this->collections[] = [
+            'base_path' => $definition['path'],
+            'prefix' => $definition['prefix'],
+            ];
     }
 
     /**
@@ -69,21 +72,27 @@ class FilesystemProvider implements RouteProviderInterface
 
     private function buildRoutes()
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->basePath));
-        $collection = new RouteCollection();
+        $allCollections = new RouteCollection();
         $fs = new Filesystem();
-        foreach ($iterator as $fileinfo) {
-            $this->buildRoute($collection, $fileinfo, $fs);
+        foreach ($this->collections as $definition) {
+            $collection = new RouteCollection();
+            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($definition['base_path']));
+            foreach ($iterator as $fileinfo) {
+                $this->buildRoute($collection, $fileinfo, $fs, $definition['base_path']);
+            }
+            if (isset($definition['prefix']) && $definition['prefix']) {
+                $collection->addPrefix($definition['prefix']);
+            }
+            $allCollections->addCollection($collection);
         }
-        $collection->addPrefix('doc');
-        return $collection;
+        return $allCollections;
     }
 
-    private function buildRoute(RouteCollection $collection, $fileinfo, Filesystem $fs) {
+    private function buildRoute(RouteCollection $collection, $fileinfo, Filesystem $fs, $basePath) {
         if ($fileinfo->isReadable() && $fileinfo->isFile() && $fileinfo->getExtension() == 'html') {
             $file = $fileinfo->openFile();
             $route = new Route();
-            $relativePath = $fs->makePathRelative($file->getPath(), $this->basePath);
+            $relativePath = $fs->makePathRelative($file->getPath(), $basePath);
             if ('./' === $relativePath) {
                 $relativePath = '';
             }
