@@ -66,6 +66,8 @@ With a template containing:
 
 Of course you can preprocess the document dealing with `$contentDocument`, for instance crawling it to extract the title or other information.
 
+Check out your new routes with the `app/console router:debug` command.
+
 ## License
 
 This bundle is under the MIT license. See the complete license in the file:
