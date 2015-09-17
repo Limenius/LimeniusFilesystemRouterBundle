@@ -88,6 +88,17 @@ Check out your new routes with the `app/console router:debug` command.
 
 Use the path of your file as in `<a href="{{ url('manual/index.html')}}">Documentation</a>`
 
+## Files exposed
+
+By default, this bundle will only expose files with the extension `html`. You can configure it with the option `extensions_exposed`:
+
+    limenius_filesystem_router:
+        collections:
+            Docs:
+                path: "%kernel.root_dir%/Resources/my_docs/_build/html"
+                prefix: docs
+                extensions_exposed: ['html', 'txt']
+
 ## License
 
 This bundle is under the MIT license. See the complete license in the file:

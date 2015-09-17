@@ -21,6 +21,7 @@ class FilesystemProvider implements RouteProviderInterface
         $this->collections[] = [
             'base_path' => $definition['path'],
             'prefix' => $definition['prefix'],
+            'extensions_exposed' => $definition['extensions_exposed'],
             ];
     }
 
@@ -79,7 +80,7 @@ class FilesystemProvider implements RouteProviderInterface
             $collection = new RouteCollection();
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($definition['base_path']));
             foreach ($iterator as $fileinfo) {
-                $this->buildRoute($collection, $fileinfo, $fs, $definition['base_path']);
+                $this->buildRoute($collection, $fileinfo, $fs, $definition['base_path'], $definition['extensions_exposed']);
             }
             if (isset($definition['prefix']) && $definition['prefix']) {
                 $collection->addPrefix($definition['prefix']);
@@ -89,8 +90,8 @@ class FilesystemProvider implements RouteProviderInterface
         return $allCollections;
     }
 
-    private function buildRoute(RouteCollection $collection, \SplFileInfo $fileinfo, Filesystem $fs, $basePath) {
-        if ($fileinfo->isReadable() && $fileinfo->isFile() && $fileinfo->getExtension() == 'html') {
+    private function buildRoute(RouteCollection $collection, \SplFileInfo $fileinfo, Filesystem $fs, $basePath, $extensionsExposed) {
+        if ($fileinfo->isReadable() && $fileinfo->isFile() && in_array($fileinfo->getExtension(), $extensionsExposed)) {
             $route = new Route();
             $relativePath = $fs->makePathRelative($fileinfo->getPath(), $basePath);
             if ('./' === $relativePath) {
@@ -98,11 +99,10 @@ class FilesystemProvider implements RouteProviderInterface
             }
             $path = $relativePath.$fileinfo->getFilename();
             $route->setPath($path);
-            $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($path));
             $route->setRouteKey($path);
             $route->setContent(new ContentDocument($fileinfo->getRealPath()));
             if ($route instanceof SymfonyRoute) {
-                $collection->add($name, $route);
+                $collection->add($path, $route);
             }
         }
     }
