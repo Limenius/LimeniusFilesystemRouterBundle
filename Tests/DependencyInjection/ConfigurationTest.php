@@ -22,10 +22,12 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             'collections' => array(
                 'Docs' => array(
                     'prefix' => 'docs',
-                    'path' => 'somepath'
+                    'path' => 'somepath',
+                    'extensions_exposed' => array('html')
                 ),
                 'Another' => array(
-                    'path' => 'someotherpath'
+                    'path' => 'someotherpath',
+                    'extensions_exposed' => array('js', 'txt')
                 ),
             ),
         );

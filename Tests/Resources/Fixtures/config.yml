@@ -5,3 +5,4 @@ limenius_filesystem_router:
             prefix: docs
         Another:
             path: "someotherpath"
+            extensions_exposed: ["js", "txt"]

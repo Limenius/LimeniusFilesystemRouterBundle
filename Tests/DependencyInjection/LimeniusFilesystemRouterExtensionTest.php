@@ -27,7 +27,8 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall('limenius_filesystem_router.route_provider', 'addCollection', array(
             array(
                 'prefix' => 'docs',
-                'path' => 'somepath'
+                'path' => 'somepath',
+                'extensions_exposed' => array ('html')
             )
         ));
     }
