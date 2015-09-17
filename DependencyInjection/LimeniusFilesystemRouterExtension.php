@@ -6,8 +6,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
-class LimeniusFilesystemRouterExtension extends Extension
+class LimeniusFilesystemRouterExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -27,5 +28,13 @@ class LimeniusFilesystemRouterExtension extends Extension
                 ->addMethodCall('addCollection', array($collection))
                 ;
         }
+    }
+
+    public function prepend(ContainerBuilder $container)
+    {
+        $prependConfig = array('dynamic' =>
+            array('generic_controller' => 'cmf_content.controller:indexAction'));
+
+        $container->prependExtensionConfig('cmf_routing', $prependConfig);
     }
 }

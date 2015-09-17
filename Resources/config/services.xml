@@ -7,5 +7,8 @@
     <services>
         <service id="limenius_filesystem_router.route_provider" class="Limenius\Bundle\FilesystemRouterBundle\Routing\FilesystemProvider">
         </service>
+        <service id="cmf_content.controller" class="Limenius\Bundle\FilesystemRouterBundle\Controller\ContentController">
+            <argument type="service" id="templating" />
+        </service>
     </services>
 </container>

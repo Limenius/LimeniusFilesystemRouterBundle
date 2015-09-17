@@ -99,7 +99,7 @@ class FilesystemProvider implements RouteProviderInterface
             $path = $relativePath.$fileinfo->getFilename();
             $route->setPath($path);
             $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($path));
-            $route->setRouteKey($name);
+            $route->setRouteKey($path);
             $route->setContent(new ContentDocument($fileinfo->getRealPath()));
             if ($route instanceof SymfonyRoute) {
                 $collection->add($name, $route);

@@ -29,6 +29,11 @@ class ContentDocument
         return $this->loaded;
     }
 
+    public function __toString()
+    {
+        return $this->getContent();
+    }
+
     private function load()
     {
         $this->content = file_get_contents($this->path);
