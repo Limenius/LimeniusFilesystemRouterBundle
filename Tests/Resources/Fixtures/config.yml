@@ -1,0 +1,7 @@
+limenius_filesystem_router:
+    collections:
+        Docs:
+            path: "somepath"
+            prefix: docs
+        Another:
+            path: "someotherpath"

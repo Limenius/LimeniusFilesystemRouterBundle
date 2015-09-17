@@ -15,6 +15,9 @@
         "symfony/filesystem": "~2.7",
         "symfony/framework-bundle": "~2.2"
     },
+    "require-dev": {
+        "matthiasnoback/symfony-dependency-injection-test": "~0.7"
+    },
     "autoload": {
         "psr-0": { "Limenius\\Bundle\\FilesystemRouterBundle": "" }
     },
