@@ -29,10 +29,10 @@ This bundle uses the Symfony CMF Dynamic router, so we need to configure it in o
                 cmf_routing.dynamic_router: 100
         dynamic:
             route_provider_service_id: limenius_filesystem_router.route_provider
-            controllers_by_type:
-                filesystem_route: Acme\MyBundle\Controller\MyController::myAction
+            templates_by_class:
+                Limenius\Bundle\FilesystemRouterBundle\Document\ContentDocument: MyBundle:MyController:my_template.html.twig
 
-Where in the last line, we have specified the action that will deal with the static content.
+Where in the last line, we have specified the template that will deal with the static content.
 
 Also, we add some lines to confgure the bundle
 
@@ -46,7 +46,23 @@ Also, we add some lines to confgure the bundle
 Every collection have a required `path` and an optional `prefix`.
 This bundle will create a route for every `html` file found recursively in the path.
 
-### Create an action
+The template that we have specified will have a `contentDocument` available:
+    {{ contentDocument |raw }}    
+
+### Custom controller
+
+We can specify the controller that will receive the document with configuring the dynamic router with:
+
+    cmf_routing:
+        chain:
+            routers_by_id:
+                router.default: 200
+                cmf_routing.dynamic_router: 100
+        dynamic:
+            route_provider_service_id: limenius_filesystem_router.route_provider
+            controllers_by_type:
+                filesystem_route: Acme\MyBundle\Controller\MyController::myAction
+Where in the last line, we have specified the action that will deal with the static content.
 
 The action will receive the contents of the file in the variable `$contentDocument`.
 
@@ -62,11 +78,15 @@ It can be as simple as:
 
 With a template containing:
 
-    {{ content |raw }}    
+    {{ content | raw }}    
 
 Of course you can preprocess the document dealing with `$contentDocument`, for instance crawling it to extract the title or other information.
 
 Check out your new routes with the `app/console router:debug` command.
+
+## Route generation
+
+Use the path of your file as in `<a href="{{ url('manual/index.html')}}">Documentation</a>`
 
 ## License
 
