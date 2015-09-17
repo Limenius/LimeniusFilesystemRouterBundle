@@ -2,13 +2,13 @@
 
 This bundle provides a Symfony chained router that adds routes for static files in a directory.
 
-Use case: You may want to integrate a product static content generator engine (Sphinx, Jekyll, you name it),
-or you simply have some html files in a directory and you want every one of them to be a route
+Use case: You may want to integrate the product of a static content generator engine (Sphinx, Jekyll, you name it),
+or you simply have some html files in a directory and you want them to be a route
 in your Symfony app, because you want, for instance, to...
 
 * Embed a bunch of static html documents into a Twig template, with a menu, a sidebar.
 * Generate routes to them.
-* Preprocess them extracting for instance the title, or converting them from markdown to html.
+* Preprocess them extracting for instance the title.
 * ...
 
 ## Usage
