@@ -4,6 +4,7 @@ namespace Limenius\Bundle\FilesystemRouterBundle\Routing;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Limenius\Bundle\FilesystemRouterBundle\Document\ContentDocument;
 
 class Route extends SymfonyRoute implements RouteObjectInterface
 {
@@ -19,15 +20,10 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function __construct(array $options = array())
     {
         $this->setDefaults(array('type' => 'filesystem_route'));
-        //$this->setRequirements(array());
         $this->setOptions($options);
-        //if ($this->getOption('add_format_pattern')) {
-        //    $this->setDefault('_format', 'html');
-        //    $this->setRequirement('_format', 'html');
-        //}
     }
 
-    public function setContent($content)
+    public function setContent(ContentDocument $content)
     {
         $this->content = $content;
     }

@@ -8,8 +8,9 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
-use Limenius\Bundle\FilesystemRouterBundle\Routing\Route;
 use Symfony\Component\Filesystem\Filesystem;
+use Limenius\Bundle\FilesystemRouterBundle\Routing\Route;
+use Limenius\Bundle\FilesystemRouterBundle\Document\ContentDocument;
 
 class FilesystemProvider implements RouteProviderInterface
 {
@@ -88,19 +89,18 @@ class FilesystemProvider implements RouteProviderInterface
         return $allCollections;
     }
 
-    private function buildRoute(RouteCollection $collection, $fileinfo, Filesystem $fs, $basePath) {
+    private function buildRoute(RouteCollection $collection, \SplFileInfo $fileinfo, Filesystem $fs, $basePath) {
         if ($fileinfo->isReadable() && $fileinfo->isFile() && $fileinfo->getExtension() == 'html') {
-            $file = $fileinfo->openFile();
             $route = new Route();
-            $relativePath = $fs->makePathRelative($file->getPath(), $basePath);
+            $relativePath = $fs->makePathRelative($fileinfo->getPath(), $basePath);
             if ('./' === $relativePath) {
                 $relativePath = '';
             }
-            $path = $relativePath.$file->getFilename();
+            $path = $relativePath.$fileinfo->getFilename();
             $route->setPath($path);
             $name = preg_replace('/[^a-z0-9]+/', '_', strtolower($path));
             $route->setRouteKey($name);
-            $route->setContent($file->fread($file->getSize()));
+            $route->setContent(new ContentDocument($fileinfo->getRealPath()));
             if ($route instanceof SymfonyRoute) {
                 $collection->add($name, $route);
             }
