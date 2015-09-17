@@ -19,7 +19,13 @@ class LimeniusFilesystemRouterExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
-        $container->setParameter('limenius_filesystem_router.collections', $config['collections']);
 
+        $collections = $config['collections'];
+        foreach ($collections as $collection) {
+            $container
+                ->getDefinition('limenius_filesystem_router.route_provider')
+                ->addMethodCall('addCollection', array($collection))
+                ;
+        }
     }
 }
