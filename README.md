@@ -47,6 +47,7 @@ Every collection have a required `path` and an optional `prefix`.
 This bundle will create a route for every `html` file found recursively in the path.
 
 The template that we have specified will have a `contentDocument` available:
+    
     {{ contentDocument |raw }}    
 
 ### Custom controller
