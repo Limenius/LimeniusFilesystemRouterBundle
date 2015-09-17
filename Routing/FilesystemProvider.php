@@ -38,12 +38,20 @@ class FilesystemProvider implements RouteProviderInterface
      */
     public function getRouteByName($name)
     {
-        $routes = $this->buildRoutes();
-        foreach ($routes as $route) {
-            if ($name == $route->getRouteKey()) {
+        $fs = new Filesystem();
+        foreach ($this->collections as $definition) {
+            $basePath = $definition['base_path'];
+            $path = $basePath . '/' . $name;
+            if ($fs->exists($path)) {
+                $fileInfo = new \SplFileInfo($path);
+                $route = $this->buildRoute($fileInfo, $fs, $basePath, $definition['extensions_exposed']);
+                if ($route && isset($definition['prefix']) && $definition['prefix']) {
+                    $route->setPath('/'.$definition['prefix'].$route->getPath());
+                }
                 return $route;
             }
         }
+        throw new RouteNotFoundException('Route ' . $name . ' not found');
     }
 
     /**
@@ -56,14 +64,19 @@ class FilesystemProvider implements RouteProviderInterface
         }
 
         $routes = [];
+        $routes = $this->buildRoutes();
         foreach ($names as $name) {
-            $routes[] = $this->getRouteByName($name);
+            foreach ($routes as $route) {
+                if ($name == $route->getRouteKey()) {
+                    $routes[] = $route;
+                }
+            }
         }
         return $routes;
     }
 
     /**
-     * Get all the routes in the filesystem.
+     * Get all the routes in the directory.
      *
      * @return array
      */
@@ -80,7 +93,9 @@ class FilesystemProvider implements RouteProviderInterface
             $collection = new RouteCollection();
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($definition['base_path']));
             foreach ($iterator as $fileinfo) {
-                $this->buildRoute($collection, $fileinfo, $fs, $definition['base_path'], $definition['extensions_exposed']);
+                if ($route = $this->buildRoute($fileinfo, $fs, $definition['base_path'], $definition['extensions_exposed'])) {
+                    $collection->add($route->getRouteKey(), $route);
+                }
             }
             if (isset($definition['prefix']) && $definition['prefix']) {
                 $collection->addPrefix($definition['prefix']);
@@ -90,7 +105,7 @@ class FilesystemProvider implements RouteProviderInterface
         return $allCollections;
     }
 
-    private function buildRoute(RouteCollection $collection, \SplFileInfo $fileinfo, Filesystem $fs, $basePath, $extensionsExposed) {
+    private function buildRoute(\SplFileInfo $fileinfo, Filesystem $fs, $basePath, $extensionsExposed) {
         if ($fileinfo->isReadable() && $fileinfo->isFile() && in_array($fileinfo->getExtension(), $extensionsExposed)) {
             $route = new Route();
             $relativePath = $fs->makePathRelative($fileinfo->getPath(), $basePath);
@@ -101,9 +116,8 @@ class FilesystemProvider implements RouteProviderInterface
             $route->setPath($path);
             $route->setRouteKey($path);
             $route->setContent(new ContentDocument($fileinfo->getRealPath()));
-            if ($route instanceof SymfonyRoute) {
-                $collection->add($path, $route);
-            }
-        }
+            return $route;
+        } else
+        return null;
     }
 }
