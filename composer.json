@@ -12,7 +12,6 @@
     ],
     "require": {
         "symfony-cmf/routing-bundle": "^2.0",
-        "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
         "matthiasnoback/symfony-dependency-injection-test": "~0.7"
